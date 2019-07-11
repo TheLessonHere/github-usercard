@@ -27,6 +27,7 @@ axios.get('https://api.github.com/users/thelessonhere')
       let myCard = cardCreator(data.data);
       let cardContainer = document.querySelector('.cards');
       cardContainer.appendChild(myCard);
+
       function followerInfoScrub (followersAPI) {
         axios.get(`${followersAPI}`)
         .then((data) => {
@@ -50,6 +51,7 @@ axios.get('https://api.github.com/users/thelessonhere')
           console.log('Follower Data not available');
         })
       }
+
       followerInfoScrub(data.data.followers_url);
     })
     .catch((error) => {
@@ -98,7 +100,6 @@ function cardCreator (userobject) {
   const userName = document.createElement('p');
   const userLocation = document.createElement('p');
   const profileTitle = document.createElement('p');
-  const profileLink = document.createElement('a');
   const followers = document.createElement('p');
   const following = document.createElement('p');
   const userBio = document.createElement('p');
@@ -112,7 +113,6 @@ function cardCreator (userobject) {
   cardInfo.appendChild(followers);
   cardInfo.appendChild(following);
   cardInfo.appendChild(userBio);
-  profileTitle.appendChild(profileLink);
 
   userCard.classList.add('card');
   cardInfo.classList.add('card-info');
@@ -125,9 +125,7 @@ function cardCreator (userobject) {
   givenName.textContent = `${userobject.name}`;
   userName.textContent = `${userobject.login}`;
   userLocation.textContent = `${userobject.location}`;
-  profileTitle.textContent = `Profile: ${profileLink}`;
-  profileLink.href = `${userobject.html_url}`;
-  profileLink.textContent = `${userobject.html_url}`;
+  profileTitle.innerHTML = "Profile: " + `<a href=${userobject.html_url}>${userobject.html_url}</a>`;
   followers.textContent = `Followers: ${userobject.followers}`;
   following.textContent = `Following: ${userobject.following}`;
   userBio.textContent = `Bio: ${userobject.bio}`;
