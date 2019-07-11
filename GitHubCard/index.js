@@ -27,6 +27,20 @@ axios.get('https://api.github.com/users/thelessonhere')
       let myCard = cardCreator(data.data);
       let cardContainer = document.querySelector('.cards');
       cardContainer.appendChild(myCard);
+      function followerInfoScrub (followersAPI) {
+        axios.get(`${followersAPI}`)
+        .then((data) => {
+          console.log('Follower Data Received', data);
+          data.data.forEach(object => {
+            followersArray.push(object.login)
+        });
+        console.log(followersArray);
+      })
+        .catch((error) => {
+          console.log('Follower Data not available')
+        })
+      }
+      followerInfoScrub(data.data.followers_url);
     })
     .catch((error) => {
       console.log('Data not available')
@@ -43,7 +57,7 @@ axios.get('https://api.github.com/users/thelessonhere')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['bigknell'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
