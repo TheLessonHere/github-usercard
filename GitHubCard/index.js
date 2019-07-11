@@ -34,16 +34,26 @@ axios.get('https://api.github.com/users/thelessonhere')
           data.data.forEach(object => {
             followersArray.push(object.login)
         });
-        console.log(followersArray);
+        followersArray.forEach(arrayItem => {
+          axios.get(`https://api.github.com/users/${arrayItem}`)
+          .then((data) => {
+            let newCard = cardCreator(data.data);
+            cardContainer.appendChild(newCard);
+            console.log('Card Added');
+          })
+          .catch((error) => {
+            console.log('Card Creation Failed');
+          })
+        });
       })
         .catch((error) => {
-          console.log('Follower Data not available')
+          console.log('Follower Data not available');
         })
       }
       followerInfoScrub(data.data.followers_url);
     })
     .catch((error) => {
-      console.log('Data not available')
+      console.log('Data not available');
     })
 
 
@@ -110,6 +120,8 @@ function cardCreator (userobject) {
   userName.classList.add('username');
 
   userImg.src = `${userobject.avatar_url}`;
+  userImg.style.height = '150px';
+  userImg.style.width = '150px';
   givenName.textContent = `${userobject.name}`;
   userName.textContent = `${userobject.login}`;
   userLocation.textContent = `${userobject.location}`;
