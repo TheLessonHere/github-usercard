@@ -21,6 +21,18 @@ axios.get('https://api.github.com/users/thelessonhere')
            create a new component and add it to the DOM as a child of .cards
 */
 
+axios.get('https://api.github.com/users/thelessonhere')
+    .then((data) => {
+      console.log('Data received');
+      let myCard = cardCreator(data.data);
+      let cardContainer = document.querySelector('.cards');
+      cardContainer.appendChild(myCard);
+    })
+    .catch((error) => {
+      console.log('Data not available')
+    })
+
+
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
           , manually find some other users' github handles, or use the list found 
@@ -55,20 +67,27 @@ const followersArray = [];
 
 function cardCreator (userobject) {
 
-  let userCard = document.createElement('div');
-  let userImg = document.createElement('img');
-  let cardInfo = document.createElement('div');
-  let givenName = document.createElement('h3');
-  let userName = document.createElement('p');
-  let userLocation = document.createElement('p');
-  let profileTitle = document.createElement('p');
-  let profileLink = document.createElement('a');
-  let followers = document.createElement('p');
-  let following = document.createElement('p');
-  let userBio = document.createElement('p');
+  const userCard = document.createElement('div');
+  const userImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const givenName = document.createElement('h3');
+  const userName = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const profileTitle = document.createElement('p');
+  const profileLink = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const userBio = document.createElement('p');
 
-  userCard.appendChild(userImg, cardInfo);
-  cardInfo.appendChild(givenName, userName, userLocation, profileTitle, followers, following, userBio);
+  userCard.appendChild(userImg);
+  userCard.appendChild(cardInfo);
+  cardInfo.appendChild(givenName);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(userLocation);
+  cardInfo.appendChild(profileTitle);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(userBio);
   profileTitle.appendChild(profileLink);
 
   userCard.classList.add('card');
@@ -76,7 +95,18 @@ function cardCreator (userobject) {
   givenName.classList.add('name');
   userName.classList.add('username');
 
-  
+  userImg.src = `${userobject.avatar_url}`;
+  givenName.textContent = `${userobject.name}`;
+  userName.textContent = `${userobject.login}`;
+  userLocation.textContent = `${userobject.location}`;
+  profileTitle.textContent = `Profile: ${profileLink}`;
+  profileLink.href = `${userobject.html_url}`;
+  profileLink.textContent = `${userobject.html_url}`;
+  followers.textContent = `Followers: ${userobject.followers}`;
+  following.textContent = `Following: ${userobject.following}`;
+  userBio.textContent = `Bio: ${userobject.bio}`;
+
+  return userCard
   
 }
 
